@@ -1,6 +1,7 @@
 //config/express.js
 var express = require('express'),
-	load = require('express-load');
+	load = require('express-load'),
+	bodyParser = require('body-parser');
 
 module.exports = function(){
 	var app = express();
@@ -10,6 +11,10 @@ module.exports = function(){
 
 	//middleware
 	app.use(express.static('./public'));
+	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(bodyParser.json());
+	app.use(require('method-override')());
+	
 	load('models', {cwd: 'app'})
 	.then('controllers')
 	.then('routes')
